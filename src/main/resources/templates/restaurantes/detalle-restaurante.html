@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="${nombreRestaurante} + ' - Stars.pe'">Restaurante - Stars.pe</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/estilos.css">
+</head>
+
+<body class="bg-light">
+  <header id="cabecera">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-lg py-3">
+      <div class="container-xxl">
+        <a class="navbar-brand fw-bold" th:href="@{/}">
+          <span class="text-primary fs-2">Stars</span><span class="text-dark fs-6">.pe</span>
+          <i class="fas fa-star text-danger abc"></i>
+          <i class="fas fa-star text-white abc" style="filter: drop-shadow(0px 0px 1px #000);"></i>
+          <i class="fas fa-star text-danger abc"></i>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+          <span><i class="fa-solid fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse pie color1" id="navbarContent">
+          <ul class="navbar-nav me-auto pt-2 ms-3 mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/}">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/explorar}">Explorar</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/mejor-valorados}">Mejor valorados</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/cerca-de-mi}">Cerca de mí</a>
+            </li>
+          </ul>
+          <form class="d-flex" th:action="@{/buscar}" method="get">
+            <input class="form-control me-2" type="search" name="q" placeholder="Buscar restaurantes..." aria-label="Buscar">
+            <button class="btn btn-outline-primary" type="submit">Buscar</button>
+          </form>
+          <div class="ms-3">
+            <a th:href="@{/login}" class="btn btn-primary">Iniciar Sesión</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Carrusel de imágenes con información superpuesta -->
+  <section class="container-fluid1 py-3 position-relative">
+    <div id="carouselExampleInterval" class="carousel slide position-relative" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <!-- Usar Thymeleaf para mostrar las imágenes dinámicamente -->
+        <div th:each="imagen, iterStat : ${imagenes}" 
+             th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'" 
+             data-bs-interval="10000">
+          <div class="position-relative">
+            <img th:src="${imagen}" class="d-block w-100" th:alt="${nombreRestaurante}" style="height: 500px; object-fit: cover;">
+            <!-- Overlay con información del restaurante -->
+            <div class="position-absolute bottom-0 start-0 w-100 p-4" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+              <div class="container-xxl">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center text-white">
+                  <div class="mb-3 mb-md-0">
+                    <h1 class="display-6 fw-bold mb-2" th:text="${nombreRestaurante}">Nombre del Restaurante</h1>
+                    <p class="mb-2 opacity-75">
+                      <span th:text="${ranking}">#2 de 198 restaurantes en Ica</span> &bull; 
+                      <span th:text="${categoria}">Peruana, Saludable</span> &bull; 
+                      <span th:text="${precio}">$$ - $$$</span>
+                    </p>
+                  </div>
+                  <div class="text-white">
+                    <div class="d-flex align-items-center mb-2">
+                      <span class="fs-3 fw-bold me-2" th:text="${calificacion}">4.9</span>
+                      <div class="star-rating fs-4 me-2">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                      </div>
+                    </div>
+                    <p class="text-center opacity-75 mb-0">
+                      (<span th:text="${totalOpiniones}">870</span> opiniones)
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Fallback en caso de que no haya imágenes -->
+        <div th:if="${imagenes == null or #arrays.isEmpty(imagenes)}" class="carousel-item active" data-bs-interval="10000">
+          <div class="position-relative">
+            <img src="https://via.placeholder.com/1200x500/0056b3/ffffff?text=Imagen+del+Restaurante" class="d-block w-100" alt="Imagen del restaurante">
+            <!-- Overlay con información del restaurante -->
+            <div class="position-absolute bottom-0 start-0 w-100 p-4" style="background: linear-gradient(transparent, rgba(0,0,0,0.8));">
+              <div class="container-xxl">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center text-white">
+                  <div class="mb-3 mb-md-0">
+                    <h1 class="display-6 fw-bold mb-2" th:text="${nombreRestaurante}">Nombre del Restaurante</h1>
+                    <p class="mb-2 opacity-75">
+                      <span th:text="${ranking}">#2 de 198 restaurantes en Ica</span> &bull; 
+                      <span th:text="${categoria}">Peruana, Saludable</span> &bull; 
+                      <span th:text="${precio}">$$ - $$$</span>
+                    </p>
+                  </div>
+                  <div class="text-white">
+                    <div class="d-flex align-items-center mb-2">
+                      <span class="fs-3 fw-bold me-2" th:text="${calificacion}">4.9</span>
+                      <div class="star-rating fs-4 me-2">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                      </div>
+                    </div>
+                    <p class="text-center opacity-75 mb-0">
+                      (<span th:text="${totalOpiniones}">870</span> opiniones)
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </section>
+
+  <main class="container-xxl py-4">
+    <!-- Secciones laterales -->
+    <div class="row g-4">
+      <!-- Información principal -->
+      <div class="col-md-8">
+        <h2 class="h4 fw-semibold mb-3">Un vistazo al restaurante</h2>
+        <p class="text-muted mb-2" th:text="${horario}">Abierto hasta las 10:00 PM</p>
+        <p class="text-muted mb-3" th:text="${direccion}">Dirección del restaurante</p>
+        <div class="d-flex gap-3 mb-4">
+          <a th:href="${paginaWeb}" th:if="${paginaWeb != '#'}" class="text-primary text-decoration-none" target="_blank">Página web</a>
+          <a href="#" class="text-primary text-decoration-none">Menú</a>
+          <a th:href="'tel:' + ${telefono}" class="text-primary text-decoration-none" th:text="${telefono}">Teléfono</a>
+        </div>
+
+        <h2 class="h4 fw-semibold mt-5 mb-3">Acerca de</h2>
+        <p class="text-muted" th:text="${descripcion}">
+          Descripción del restaurante
+        </p>
+
+        <h3 class="h5 fw-semibold mt-4 mb-2">Características</h3>
+        <ul class="text-muted">
+          <li>Almuerzo, Cena, Abierto hasta tarde, Bebidas</li>
+          <li>Acepta tarjetas de crédito</li>
+          <li>Comida para llevar, Estilo familiar, Servicio de mesa</li>
+        </ul>
+      </div>
+
+      <!-- Horarios -->
+      <div class="col-md-4">
+        <div class="bg-white rounded-3 shadow-sm p-4 h-100">
+          <h2 class="h4 fw-semibold mb-3">Horas</h2>
+          <ul class="text-muted list-unstyled">
+            <li><strong>Domingo:</strong> 8:00 a. m. al 6:00 p. m.</li>
+            <li><strong>Lunes:</strong> 8:00 a. m. a 11:00 p. m.</li>
+            <li><strong>Martes:</strong> 9:30 a. m. a 5:00 p. m.</li>
+            <li><strong>Miércoles:</strong> 8:00 a. m. a 11:00 p. m.</li>
+            <li><strong>Jueves:</strong> 9:30 a. m. a 5:00 p. m.</li>
+            <li><strong>Viernes:</strong> 9:30 a. m. a 5:00 p. m.</li>
+            <li><strong>Sábado:</strong> 9:30 a. m. a 5:00 p. m.</li>
+          </ul>
+
+          <div class="mt-4">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5891.8201017861975!2d-75.71993877375274!3d-14.002032881068214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9110e3387cd314d1%3A0xbd2f62d454699575!2sTambo%20de%20Tacama!5e1!3m2!1ses-419!2spe!4v1744413373635!5m2!1ses-419!2spe"
+              width="100%" height="250" class="border-0 rounded-3" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Más opciones similares -->
+    <section class="bg-white py-5 my-5 rounded-3">
+      <div class="container-xxl">
+        <h2 class="h3 fw-bold mb-4">Más opciones similares</h2>
+
+        <div class="similar-options-scroll">
+          <img
+            src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/69/bb/3b/el-fundo-restaurante.jpg?w=1100&h=-1&s=1"
+            alt="Imagen 1" class="rounded">
+          <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/71/5e/bb/caption.jpg?w=1100&h=-1&s=1"
+            alt="Imagen 2" class="rounded">
+          <img
+            src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/25/73/8a/49/epika-grill-nacio-en.jpg?w=800&h=-1&s=1"
+            alt="Imagen 3" class="rounded">
+          <img
+            src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1c/a5/7a/e2/tacu-tacu-con-apanado.jpg?w=900&h=-1&s=1"
+            alt="Imagen 4" class="rounded">
+        </div>
+      </div>
+    </section>
+
+    <!-- Comentarios del producto -->
+    <section class="mb-5">
+      <h2 class="h3 fw-bold mb-4">Comentarios y Calificaciones</h2>
+      
+      <!-- Resumen de calificaciones -->
+      <div class="bg-white p-4 p-md-5 rounded-3 shadow-sm mb-4">
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <div class="display-5 fw-bold mb-2" th:if="${totalOpiniones > 0}" th:text="${calificacionFormateada}">4.9</div>
+            <div class="display-5 fw-bold mb-2 text-muted" th:if="${totalOpiniones == 0}">0.0</div>
+            <div class="star-rating fs-4 mb-2" th:if="${totalOpiniones > 0}">
+              <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                <i th:class="${i <= calificacion} ? 'fas fa-star text-warning' : 'fas fa-star text-muted'"></i>
+              </th:block>
+            </div>
+            <div class="star-rating fs-4 mb-2" th:if="${totalOpiniones == 0}">
+              <i class="fas fa-star text-muted"></i>
+              <i class="fas fa-star text-muted"></i>
+              <i class="fas fa-star text-muted"></i>
+              <i class="fas fa-star text-muted"></i>
+              <i class="fas fa-star text-muted"></i>
+            </div>
+            <p class="text-muted mb-0" th:if="${totalOpiniones > 0}">
+              <span th:text="${totalOpiniones}">870</span> 
+              <span th:text="${totalOpiniones == 1} ? 'opinión' : 'opiniones'">opiniones</span>
+            </p>
+            <p class="text-muted mb-0" th:if="${totalOpiniones == 0}">Sin opiniones aún</p>
+          </div>
+          <div class="col-md-8" th:if="${totalOpiniones > 0}">
+            <h5>Distribución de calificaciones</h5>
+            <!-- Barras de progreso estáticas por ahora -->
+            <div class="mb-2">
+              <div class="d-flex align-items-center">
+                <span class="me-2">5★</span>
+                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                  <div class="progress-bar bg-success" style="width: 75%"></div>
+                </div>
+                <span class="small text-muted">75%</span>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="d-flex align-items-center">
+                <span class="me-2">4★</span>
+                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                  <div class="progress-bar bg-primary" style="width: 20%"></div>
+                </div>
+                <span class="small text-muted">20%</span>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="d-flex align-items-center">
+                <span class="me-2">3★</span>
+                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                  <div class="progress-bar bg-warning" style="width: 3%"></div>
+                </div>
+                <span class="small text-muted">3%</span>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="d-flex align-items-center">
+                <span class="me-2">2★</span>
+                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                  <div class="progress-bar bg-orange" style="width: 1%"></div>
+                </div>
+                <span class="small text-muted">1%</span>
+              </div>
+            </div>
+            <div class="mb-2">
+              <div class="d-flex align-items-center">
+                <span class="me-2">1★</span>
+                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                  <div class="progress-bar bg-danger" style="width: 1%"></div>
+                </div>
+                <span class="small text-muted">1%</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 d-flex align-items-center justify-content-center" th:if="${totalOpiniones == 0}">
+            <div class="text-center">
+              <i class="fas fa-comment-dots fa-3x text-muted mb-3"></i>
+              <h5 class="text-muted">¡Sé el primero en calificar!</h5>
+              <p class="text-muted">Ayuda a otros usuarios compartiendo tu experiencia en este restaurante.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario para agregar nueva reseña -->
+      <div class="bg-white p-4 rounded-3 shadow-sm mb-4">
+        <h4 class="mb-3">
+          <i class="fas fa-edit text-primary me-2"></i>
+          Escribe tu reseña
+        </h4>
+        <div class="alert alert-success d-none" id="mensajeExito">
+          <i class="fas fa-check-circle me-2"></i>
+          ¡Tu reseña ha sido publicada exitosamente!
+        </div>
+        <form th:action="@{'/restaurante/' + ${nombreRestaurante.toLowerCase().replaceAll(' ', '-').replaceAll('ó', 'o')} + '/comentario'}" method="POST" id="formularioReseña">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="nombreUsuario" class="form-label">
+                <i class="fas fa-user me-1"></i>Tu nombre
+              </label>
+              <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" 
+                     placeholder="Ingresa tu nombre" required minlength="2" maxlength="50">
+              <div class="invalid-feedback">
+                Por favor, ingresa un nombre válido (2-50 caracteres).
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="calificacion" class="form-label">
+                <i class="fas fa-star me-1"></i>Tu calificación
+              </label>
+              <div class="rating-input d-flex align-items-center">
+                <div class="star-rating-input me-3">
+                  <input type="radio" id="star5" name="calificacion" value="5" required>
+                  <label for="star5" class="star">★</label>
+                  <input type="radio" id="star4" name="calificacion" value="4">
+                  <label for="star4" class="star">★</label>
+                  <input type="radio" id="star3" name="calificacion" value="3">
+                  <label for="star3" class="star">★</label>
+                  <input type="radio" id="star2" name="calificacion" value="2">
+                  <label for="star2" class="star">★</label>
+                  <input type="radio" id="star1" name="calificacion" value="1">
+                  <label for="star1" class="star">★</label>
+                </div>
+                <span class="rating-text text-muted">Selecciona tu calificación</span>
+              </div>
+              <div class="invalid-feedback">
+                Por favor, selecciona una calificación.
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="comentario" class="form-label">
+              <i class="fas fa-comment me-1"></i>Tu comentario
+            </label>
+            <textarea class="form-control" id="comentario" name="comentario" rows="4" 
+                      placeholder="Comparte tu experiencia en este restaurante..." 
+                      required minlength="10" maxlength="500"></textarea>
+            <div class="form-text">
+              <span id="contadorCaracteres">0</span>/500 caracteres
+            </div>
+            <div class="invalid-feedback">
+              Por favor, escribe un comentario de al menos 10 caracteres.
+            </div>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="politicaPrivacidad" required>
+            <label class="form-check-label small" for="politicaPrivacidad">
+              Acepto que mi reseña sea publicada de acuerdo a nuestras 
+              <a href="#" class="text-primary">políticas de contenido</a>
+            </label>
+            <div class="invalid-feedback">
+              Debes aceptar las políticas de contenido.
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="btnPublicar">
+            <i class="fas fa-paper-plane me-2"></i>Publicar Reseña
+          </button>
+        </form>
+      </div>
+
+      <!-- Lista de comentarios existentes -->
+      <div class="bg-white p-4 p-md-5 rounded-3 shadow-sm">
+        <h4 class="mb-4">
+          <i class="fas fa-comments text-primary me-2"></i>
+          Reseñas de otros usuarios
+          <span class="badge bg-primary ms-2" th:if="${totalOpiniones > 0}" th:text="${totalOpiniones}">0</span>
+        </h4>
+        
+        <!-- Comentarios dinámicos -->
+        <div th:if="${comentarios != null and !comentarios.isEmpty()}">
+          <div th:each="comentario, iterStat : ${comentarios}" 
+               th:class="${iterStat.index < comentarios.size() - 1} ? 'border-bottom pb-4 mb-4' : 'pb-2'">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <div class="d-flex align-items-center mb-1">
+                  <i class="fas fa-user-circle text-muted me-2 fs-5"></i>
+                  <p class="fw-bold mb-0" th:text="${comentario.nombreUsuario}">Nombre Usuario</p>
+                </div>
+                <div class="star-rating mb-1">
+                  <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                    <i th:class="${i <= comentario.calificacion} ? 'fas fa-star text-warning' : 'fas fa-star text-muted'"></i>
+                  </th:block>
+                  <span class="ms-2 small text-muted" th:text="${comentario.calificacion} + '/5'">5/5</span>
+                </div>
+              </div>
+              <small class="text-muted">
+                <i class="fas fa-clock me-1"></i>
+                <span th:text="${comentario.fechaFormateada}">Hace 2 días</span>
+              </small>
+            </div>
+            <p class="mb-0 text-dark" th:text="${comentario.comentario}">Comentario del usuario sobre su experiencia.</p>
+          </div>
+        </div>
+
+        <!-- Mensaje si no hay comentarios -->
+        <div th:if="${comentarios == null or comentarios.isEmpty()}" class="text-center py-5">
+          <i class="fas fa-comment-slash fa-3x text-muted mb-3"></i>
+          <h5 class="text-muted">Aún no hay reseñas</h5>
+          <p class="text-muted">¡Sé el primero en compartir tu experiencia en este restaurante!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-dark text-white py-4">
+    <div class="container-xxl">
+      <div class="text-center">
+        <p class="mb-0">© 2025 Stars.pe - Todos los derechos reservados</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

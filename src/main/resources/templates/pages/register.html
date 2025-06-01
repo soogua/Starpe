@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - Restaurant Rating Forum</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/loginRegister.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3 fixed-top">
+            <div class="container-xxl">
+                <a class="navbar-brand fw-bold" th:href="@{/}">
+                    <span class="text-primary fs-2">Stars</span><span class="text-dark fs-6">.pe</span>
+                    <i class="fas fa-star text-danger abc"></i>
+                    <i class="fas fa-star text-white abc" style="filter: drop-shadow(0px 0px 1px #000);"></i>
+                    <i class="fas fa-star text-danger abc"></i>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span><i class="fa-solid fa-bars"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto pt-2 ms-3 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/explorar}">Explorar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/mejor-valorados}">Mejor valorados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/cerca-de-mi}">Cerca de mí</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" th:action="@{/buscar}" method="get">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Buscar restaurantes..."
+                            aria-label="Buscar">
+                        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                    </form>
+                    <div class="ms-3">
+                        <a th:href="@{/login}" class="btn btn-primary">Iniciar Sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow border-0 mt-5">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <span class="text-primary fs-2">Stars</span><span class="text-dark fs-6">.pe</span>
+                            <div class="mt-2">
+                                <i class="fas fa-star text-danger"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-danger"></i>
+                            </div>
+                            <h2 class="mt-3 oswald-500">Crear Cuenta</h2>
+                            <p class="text-muted small">Únete a nuestra comunidad de amantes de la gastronomía</p>
+                        </div>
+
+                        <!-- Social Registration Buttons -->
+                        <div class="mb-4">
+                            <button type="button"
+                                class="btn btn-outline-danger w-100 mb-2 d-flex align-items-center justify-content-center">
+                                <i class="fab fa-google me-2"></i> Registrarse con Google
+                            </button>
+                            <button type="button"
+                                class="btn btn-outline-primary w-100 mb-2 d-flex align-items-center justify-content-center">
+                                <i class="fab fa-facebook-f me-2"></i> Registrarse con Facebook
+                            </button>
+                        </div>
+
+                        <!-- Separator -->
+                        <div class="separator d-flex align-items-center mb-4">
+                            <hr class="flex-grow-1">
+                            <span class="mx-3 text-muted small">O regístrate con tu correo</span>
+                            <hr class="flex-grow-1">
+                        </div>
+
+                        <form th:action="@{/register}" method="POST">
+                            <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">Nombres</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i
+                                                class="fas fa-user text-muted"></i></span>
+                                        <input type="text" class="form-control" id="firstName" name="firstName"
+                                            placeholder="Ingrese sus nombres" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Apellidos</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i
+                                                class="fas fa-user text-muted"></i></span>
+                                        <input type="text" class="form-control" id="lastName" name="lastName"
+                                            placeholder="Ingrese sus apellidos" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i
+                                            class="fas fa-envelope text-muted"></i></span>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="nombre@ejemplo.com" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i
+                                            class="fas fa-lock text-muted"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        placeholder="Cree una contraseña" required>
+                                </div>
+                                <div class="form-text">La contraseña debe tener al menos 8 caracteres, incluyendo letras
+                                    y números.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i
+                                            class="fas fa-lock text-muted"></i></span>
+                                    <input type="password" class="form-control" id="confirmPassword"
+                                        name="confirmPassword" placeholder="Confirme su contraseña" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                                    <label class="form-check-label small" for="terms">
+                                        Acepto los <a href="#" class="text-primary text-decoration-none"
+                                            data-bs-toggle="modal" data-bs-target="#termsModal">Términos y
+                                            Condiciones</a> y la <a href="#" class="text-primary text-decoration-none"
+                                            data-bs-toggle="modal" data-bs-target="#privacyModal">Política de
+                                            Privacidad</a>
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2 mb-3">Crear Cuenta</button>
+                        </form>
+                        <p class="mt-3 text-center mb-0">¿Ya tienes una cuenta? <a th:href="@{/login}"
+                                class="text-primary text-decoration-none">Inicia Sesión</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Términos y Condiciones -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Términos y Condiciones</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="fw-bold">1. Aceptación de los Términos</h6>
+                    <p>Al registrarse y utilizar Stars.pe, usted acepta estos términos y condiciones en su totalidad. Si
+                        no está de acuerdo con estos términos, le solicitamos que no utilice nuestra plataforma.</p>
+
+                    <h6 class="fw-bold">2. Descripción del Servicio</h6>
+                    <p>Stars.pe es una plataforma que permite a los usuarios descubrir, evaluar y compartir opiniones
+                        sobre restaurantes en Ica, Perú. Los usuarios pueden calificar establecimientos, escribir
+                        reseñas y ver las opiniones de otros miembros de la comunidad.</p>
+
+                    <h6 class="fw-bold">3. Registro de Cuenta</h6>
+                    <p>Para utilizar todas las funciones de Stars.pe, es necesario registrarse proporcionando
+                        información precisa y actualizada. Usted es responsable de mantener la confidencialidad de su
+                        contraseña y de todas las actividades realizadas con su cuenta.</p>
+
+                    <h6 class="fw-bold">4. Contenido del Usuario</h6>
+                    <p>Al publicar reseñas, calificaciones, fotos u otro contenido en Stars.pe:</p>
+                    <ul>
+                        <li>Usted mantiene los derechos de autor de su contenido, pero otorga a Stars.pe una licencia
+                            mundial, no exclusiva y libre de regalías para usar, reproducir y mostrar dicho contenido.
+                        </li>
+                        <li>Garantiza que su contenido es original o tiene los derechos necesarios para compartirlo.
+                        </li>
+                        <li>Acepta que su contenido puede ser visto por otros usuarios y aparecer en resultados de
+                            búsqueda.</li>
+                    </ul>
+
+                    <h6 class="fw-bold">5. Directrices de Contenido</h6>
+                    <p>Las reseñas y calificaciones deben:</p>
+                    <ul>
+                        <li>Basarse en experiencias personales reales en los establecimientos.</li>
+                        <li>Ser honestas, precisas y no engañosas.</li>
+                        <li>No contener lenguaje ofensivo, discriminatorio, difamatorio o ilegal.</li>
+                        <li>No incluir información personal de terceros sin su consentimiento.</li>
+                        <li>No contener publicidad o spam.</li>
+                    </ul>
+
+                    <h6 class="fw-bold">6. Moderación de Contenido</h6>
+                    <p>Stars.pe se reserva el derecho de moderar, editar o eliminar cualquier contenido que viole estas
+                        directrices o que consideremos inapropiado. Podemos suspender o terminar cuentas que violen
+                        repetidamente estos términos.</p>
+
+                    <h6 class="fw-bold">7. Precisión de la Información</h6>
+                    <p>Aunque nos esforzamos por mantener información precisa sobre los restaurantes (ubicación,
+                        horarios, menús), no podemos garantizar la exactitud completa. Recomendamos verificar la
+                        información crítica directamente con los establecimientos.</p>
+
+                    <h6 class="fw-bold">8. Limitación de Responsabilidad</h6>
+                    <p>Stars.pe no se hace responsable de:</p>
+                    <ul>
+                        <li>La calidad o seguridad de los alimentos o servicios de los restaurantes listados.</li>
+                        <li>Disputas entre usuarios y restaurantes.</li>
+                        <li>Cualquier daño o perjuicio resultante del uso de nuestra plataforma.</p>
+                    </ul>
+
+                    <h6 class="fw-bold">9. Modificaciones a los Términos</h6>
+                    <p>Stars.pe puede modificar estos términos en cualquier momento. Los cambios entrarán en vigor
+                        inmediatamente después de su publicación. El uso continuado de nuestra plataforma después de
+                        tales cambios constituye su aceptación de los nuevos términos.</p>
+
+                    <h6 class="fw-bold">10. Ley Aplicable</h6>
+                    <p>Estos términos se rigen por las leyes de Perú. Cualquier disputa relacionada con estos términos
+                        será sometida a la jurisdicción exclusiva de los tribunales de Ica, Perú.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="acceptTermsBtn">Acepto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Política de Privacidad -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="privacyModalLabel">Política de Privacidad</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>En Stars.pe, valoramos y respetamos su privacidad. Esta Política de Privacidad explica cómo
+                        recopilamos, utilizamos y protegemos su información cuando utiliza nuestra plataforma de
+                        calificación de restaurantes.</p>
+
+                    <h6 class="fw-bold">1. Información que Recopilamos</h6>
+                    <p><strong>Información personal proporcionada por usted:</strong></p>
+                    <ul>
+                        <li>Datos de registro (nombre, apellido, correo electrónico, contraseña)</li>
+                        <li>Información de perfil (foto, ubicación, preferencias gastronómicas)</li>
+                        <li>Contenido generado (reseñas, calificaciones, fotos, comentarios)</li>
+                    </ul>
+
+                    <p><strong>Información recopilada automáticamente:</strong></p>
+                    <ul>
+                        <li>Datos de ubicación (cuando lo permita)</li>
+                        <li>Información del dispositivo y navegador</li>
+                        <li>Datos de uso (páginas visitadas, restaurantes vistos, búsquedas)</li>
+                        <li>Cookies y tecnologías similares</li>
+                    </ul>
+
+                    <h6 class="fw-bold">2. Cómo Utilizamos su Información</h6>
+                    <p>Utilizamos su información para:</p>
+                    <ul>
+                        <li>Proporcionar y mejorar nuestro servicio</li>
+                        <li>Personalizar su experiencia (mostrar restaurantes cercanos, recomendaciones)</li>
+                        <li>Procesar y mostrar sus reseñas y calificaciones</li>
+                        <li>Comunicarnos con usted (notificaciones, actualizaciones, respuestas a consultas)</li>
+                        <li>Analizar tendencias y mejorar nuestra plataforma</li>
+                        <li>Detectar y prevenir actividades fraudulentas o abusivas</li>
+                    </ul>
+
+                    <h6 class="fw-bold">3. Compartición de Información</h6>
+                    <p>Podemos compartir su información con:</p>
+                    <ul>
+                        <li><strong>Otros usuarios:</strong> Su nombre, foto de perfil y reseñas son visibles
+                            públicamente.</li>
+                        <li><strong>Restaurantes:</strong> Los establecimientos pueden acceder a las reseñas y
+                            calificaciones de su negocio.</li>
+                        <li><strong>Proveedores de servicios:</strong> Empresas que nos ayudan a operar nuestra
+                            plataforma (almacenamiento, análisis, procesamiento de pagos).</li>
+                        <li><strong>Requerimientos legales:</strong> Cuando sea necesario para cumplir con la ley o
+                            proteger nuestros derechos.</li>
+                    </ul>
+
+                    <h6 class="fw-bold">4. Sus Opciones y Derechos</h6>
+                    <p>Usted tiene derecho a:</p>
+                    <ul>
+                        <li>Acceder, corregir o eliminar su información personal</li>
+                        <li>Retirar su consentimiento para la recopilación de datos</li>
+                        <li>Solicitar la portabilidad de sus datos</li>
+                        <li>Controlar la configuración de privacidad de su cuenta</li>
+                        <li>Desactivar la recopilación de datos de ubicación</li>
+                        <li>Optar por no recibir comunicaciones promocionales</li>
+                    </ul>
+
+                    <h6 class="fw-bold">5. Seguridad de Datos</h6>
+                    <p>Implementamos medidas técnicas y organizativas apropiadas para proteger su información contra el
+                        acceso, divulgación, alteración o destrucción no autorizados. Sin embargo, ninguna transmisión
+                        por Internet o almacenamiento electrónico es completamente segura.</p>
+
+                    <h6 class="fw-bold">6. Retención de Datos</h6>
+                    <p>Conservamos su información mientras mantenga una cuenta en Stars.pe o mientras sea necesario para
+                        proporcionarle nuestros servicios. Puede solicitar la eliminación de su cuenta en cualquier
+                        momento, pero algunas informaciones podrían retenerse para fines legales, de prevención de
+                        fraude o técnicos.</p>
+
+                    <h6 class="fw-bold">7. Menores de Edad</h6>
+                    <p>Stars.pe no está dirigido a menores de 18 años. No recopilamos intencionalmente información de
+                        menores. Si descubrimos que hemos recopilado información de un menor, tomaremos medidas para
+                        eliminarla.</p>
+
+                    <h6 class="fw-bold">8. Cambios a esta Política</h6>
+                    <p>Podemos actualizar esta Política de Privacidad periódicamente. La versión más reciente estará
+                        siempre disponible en nuestra plataforma. Le notificaremos sobre cambios significativos antes de
+                        que entren en vigor.</p>
+
+                    <h6 class="fw-bold">9. Contacto</h6>
+                    <p>Si tiene preguntas sobre esta Política de Privacidad o sobre cómo manejamos su información,
+                        contáctenos en: privacy@stars.pe</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="acceptPrivacyBtn">Acepto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row pie">
+                <div class="col-md-4 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Stars</h5>
+                    <p class="small text-secondary">La plataforma líder de reseñas gastronómicas en Ica, donde los
+                        amantes de la comida comparten sus experiencias y descubren nuevos lugares.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/}" class="text-decoration-none text-secondary">Inicio</a>
+                        </li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Explorar</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Contacto</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3 pie">
+                    <h5 class="oswald-500 mb-3 text-warning">Síguenos</h5>
+                    <div class="gap-3 pie">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f text-secondary"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram text-secondary"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter text-secondary"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Noticias</h5>
+                    <form>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Email">
+                            <button class="oswald-500 btn btn-primary" type="button">Suscribir</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small text-white-50 mb-md-0">© 2025 Stars. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline small mb-0">
+                        <li class="list-inline-item"><a href="#"
+                                class="text-decoration-none text-white-50">Privacidad</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Términos</a>
+                        </li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Cookies</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/loginRegister.js"></script>
+</body>
+
+</html>

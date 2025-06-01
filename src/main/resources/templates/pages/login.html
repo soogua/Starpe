@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Stars.pe</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/loginRegister.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3 fixed-top">
+            <div class="container-xxl">
+                <a class="navbar-brand fw-bold" th:href="@{/}">
+                    <span class="text-primary fs-2">Stars</span><span class="text-dark fs-6">.pe</span>
+                    <i class="fas fa-star text-danger abc"></i>
+                    <i class="fas fa-star text-white abc" style="filter: drop-shadow(0px 0px 1px #000);"></i>
+                    <i class="fas fa-star text-danger abc"></i>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span><i class="fa-solid fa-bars"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto pt-2 ms-3 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/explorar}">Explorar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/mejor-valorados}">Mejor valorados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/cerca-de-mi}">Cerca de mí</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" th:action="@{/buscar}" method="get">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Buscar restaurantes..." aria-label="Buscar">
+                        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                    </form>
+                    <div class="ms-3">
+                        <a th:href="@{/register}" class="btn btn-outline-primary">Registrarse</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow border-0 mt-5">
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <span class="text-primary fs-2">Stars</span><span class="text-dark fs-6">.pe</span>
+                            <div class="mt-2">
+                                <i class="fas fa-star text-danger"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-danger"></i>
+                            </div>
+                            <h2 class="mt-3 oswald-500">Iniciar Sesión</h2>
+                            <p class="text-muted small">Ingresa tus credenciales para continuar</p>
+                        </div>
+
+                        <!-- Social Login Buttons -->
+                        <div class="mb-4">
+                            <button type="button"
+                                class="btn btn-outline-danger w-100 mb-2 d-flex align-items-center justify-content-center">
+                                <i class="fab fa-google me-2"></i> Continuar con Google
+                            </button>
+                            <button type="button"
+                                class="btn btn-outline-primary w-100 mb-2 d-flex align-items-center justify-content-center">
+                                <i class="fab fa-facebook-f me-2"></i> Continuar con Facebook
+                            </button>
+                        </div>
+
+                        <!-- Separator -->
+                        <div class="separator d-flex align-items-center mb-4">
+                            <hr class="flex-grow-1">
+                            <span class="mx-3 text-muted small">O ingresa con tu correo</span>
+                            <hr class="flex-grow-1">
+                        </div>
+
+                        <form action="/auth/login" method="post">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i
+                                            class="fas fa-envelope text-muted"></i></span>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Ingrese su correo electrónico" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i
+                                            class="fas fa-lock text-muted"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password"
+                                        placeholder="Ingrese su contraseña" required>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                    <label class="form-check-label small" for="remember">Recordarme</label>
+                                </div>
+                                <a href="#" class="small text-primary text-decoration-none">¿Olvidaste tu
+                                    contraseña?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2 mb-3">Iniciar Sesión</button>
+                        </form>
+                        <div id="resultado" class="mt-3"></div>
+                        <p class="mt-3 text-center mb-0">¿No tienes una cuenta? <a th:href="@{/register}"
+                                class="text-primary text-decoration-none">Regístrate aquí</a></p>
+                        <script>
+                            // Manejar respuesta sin recargar la página
+                            document.querySelector("form").addEventListener("submit", async (e) => {
+                                e.preventDefault();
+                                const formData = new FormData(e.target);
+
+                                const response = await fetch(e.target.action, {
+                                    method: "POST",
+                                    body: new URLSearchParams(formData),
+                                    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+                                });
+
+                                const resultado = await response.text();
+                                document.getElementById("resultado").innerHTML = `
+                                    <div class="alert ${response.ok ? 'alert-success' : 'alert-danger'}">
+                                        ${resultado}
+                                    </div>
+                                `;
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row pie">
+                <div class="col-md-4 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Stars</h5>
+                    <p class="small text-secondary">La plataforma líder de reseñas gastronómicas en Ica, donde los
+                        amantes de la comida comparten sus experiencias y descubren nuevos lugares.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/}" class="text-decoration-none text-secondary">Inicio</a></li>
+                        <li><a th:href="@{/explorar}" class="text-decoration-none text-secondary">Explorar</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Contacto</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3 pie">
+                    <h5 class="oswald-500 mb-3 text-warning">Síguenos</h5>
+                    <div class="gap-3 pie">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f text-secondary"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram text-secondary"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter text-secondary"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Noticias</h5>
+                    <form>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Email">
+                            <button class="oswald-500 btn btn-primary" type="button">Suscribir</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small text-white-50 mb-md-0">© 2025 Stars.pe - Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline small mb-0">
+                        <li class="list-inline-item"><a href="#"
+                                class="text-decoration-none text-white-50">Privacidad</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Términos</a>
+                        </li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Cookies</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stars.pe - Foro de Calificaciones de Restaurantes</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3 fixed-top">
+            <div class="container-xxl">
+                <a class="navbar-brand fw-bold" th:href="@{/}">
+                    <span class="text-primary fs-2">Stars</span><span class="text-dark fs-6">.pe</span>
+                    <i class="fas fa-star text-danger abc"></i>
+                    <i class="fas fa-star text-white abc" style="filter: drop-shadow(0px 0px 1px #000);"></i>
+                    <i class="fas fa-star text-danger abc"></i>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span><i class="fa-solid fa-bars"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto pt-2 ms-3 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/explorar}">Explorar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/mejor-valorados}">Mejor valorados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/cerca-de-mi}">Cerca de mí</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" th:action="@{/buscar}" method="get">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Buscar restaurantes..." aria-label="Buscar">
+                        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                    </form>
+                    <div class="ms-3">
+                        <a th:href="@{/login}" class="btn btn-outline-primary me-2">Iniciar Sesión</a>
+                        <a th:href="@{/register}" class="btn btn-primary">Registrarse</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section con carrusel dinámico de los mejores restaurantes -->
+    <section class="hero-carousel position-relative mt-5 pt-3">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Carrusel dinámico basado en ranking real -->
+                <div th:each="restaurante, iterStat : ${restaurantesTop3}" 
+                     th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                    <div class="hero-slide position-relative" 
+                         th:style="'background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(' + ${restaurante.imagen} + ') center/cover no-repeat; height: 70vh;'">
+                        <div class="container-fluid h-100 d-flex align-items-center justify-content-center text-center text-white">
+                            <div>
+                                <div class="mb-3">
+                                    <span th:if="${iterStat.index == 0}" class="badge bg-warning text-dark fs-6 px-3 py-2">🏆 #1 MEJOR VALORADO</span>
+                                    <span th:if="${iterStat.index == 1}" class="badge bg-info text-white fs-6 px-3 py-2">🥈 #2 MEJOR VALORADO</span>
+                                    <span th:if="${iterStat.index == 2}" class="badge bg-success text-white fs-6 px-3 py-2">🥉 #3 MEJOR VALORADO</span>
+                                </div>
+                                <h1 class="display-3 oswald-500 mb-4" th:text="${restaurante.nombre}">Nombre Restaurante</h1>
+                                <div class="mb-3" th:if="${restaurante.totalOpiniones > 0}">
+                                    <!-- Mostrar estrellas dinámicas -->
+                                    <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                        <i th:class="${i <= restaurante.calificacion} ? 'fas fa-star text-warning fs-4' : 'fas fa-star text-muted fs-4'"></i>
+                                    </th:block>
+                                    <span class="ms-2 fs-4 fw-bold" th:text="${#numbers.formatDecimal(restaurante.calificacion, 1, 1)} + '/5'">4.8/5</span>
+                                </div>
+                                <div class="mb-3" th:if="${restaurante.totalOpiniones == 0}">
+                                    <span class="fs-4 text-muted">Sin calificaciones aún</span>
+                                </div>
+                                <p class="lead fs-4 mb-4" th:text="${restaurante.descripcion}">Descripción del restaurante</p>
+                                <div class="d-flex gap-3 justify-content-center">
+                                    <a th:href="@{'/restaurante/' + ${restaurante.slug}}" class="btn btn-primary btn-lg px-5 py-3">Ver Restaurante</a>
+                                    <a th:href="@{/mejor-valorados}" class="btn btn-outline-light btn-lg px-5 py-3">Ver Ranking</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fallback si no hay restaurantes dinámicos -->
+                <div th:if="${restaurantesTop3 == null or #lists.isEmpty(restaurantesTop3)}" class="carousel-item active">
+                    <div class="hero-slide position-relative" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/imagenes/ElFundo/fundo5.jpg') center/cover no-repeat; height: 70vh;">
+                        <div class="container-fluid h-100 d-flex align-items-center justify-content-center text-center text-white">
+                            <div>
+                                <div class="mb-3">
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">🏆 DESTACADO</span>
+                                </div>
+                                <h1 class="display-3 oswald-500 mb-4">Descubre los Mejores Restaurantes</h1>
+                                <p class="lead fs-4 mb-4">La mejor comida de Ica te está esperando</p>
+                                <div class="d-flex gap-3 justify-content-center">
+                                    <a href="#restaurantes" class="btn btn-primary btn-lg px-5 py-3">Explorar Restaurantes</a>
+                                    <a th:href="@{/explorar}" class="btn btn-outline-light btn-lg px-5 py-3">Ver Todos</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Indicadores del carrusel dinámicos -->
+            <div class="carousel-indicators" th:if="${restaurantesTop3 != null and !#lists.isEmpty(restaurantesTop3)}">
+                <button th:each="restaurante, iterStat : ${restaurantesTop3}" 
+                        type="button" 
+                        data-bs-target="#heroCarousel" 
+                        th:data-bs-slide-to="${iterStat.index}"
+                        th:class="${iterStat.index == 0} ? 'active' : ''"
+                        th:aria-current="${iterStat.index == 0} ? 'true' : 'false'"
+                        th:aria-label="${restaurante.nombre}">
+                </button>
+            </div>
+            
+            <!-- Indicador simple para fallback -->
+            <div class="carousel-indicators" th:if="${restaurantesTop3 == null or #lists.isEmpty(restaurantesTop3)}">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            </div>
+            
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Contenido principal -->
+    <main class="container-xxl py-5" id="restaurantes">
+        <!-- Sección de restaurantes destacados -->
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-5 oswald-500">Restaurantes Destacados</h2>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100 border-0">
+                            <img src="/imagenes/ElFundo/fundo5.jpg" class="card-img-top" alt="El Fundo" style="height: 250px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title oswald-500">El Fundo</h5>
+                                <p class="card-text flex-grow-1">Lugar amplio con excelente ventilación y comida marina y criolla de lo mejor.</p>
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span class="ms-2 fw-bold">4.9/5</span>
+                                    <small class="text-muted ms-1">(870 reseñas)</small>
+                                </div>
+                                <a th:href="@{/restaurante/el-fundo}" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100 border-0">
+                            <img src="/imagenes/Yemheng/yem4.jpg" class="card-img-top" alt="Chifa Yemheng" style="height: 250px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title oswald-500">Chifa Yemheng</h5>
+                                <p class="card-text flex-grow-1">Fusión de lo mejor de la cocina china y peruana con platos sabrosos y frescos.</p>
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span class="ms-2 fw-bold">4.8/5</span>
+                                    <small class="text-muted ms-1">(642 reseñas)</small>
+                                </div>
+                                <a th:href="@{/restaurante/chifa-yemheng}" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100 border-0">
+                            <img src="/imagenes/CordonylaRosa/cordon1.jpg" class="card-img-top" alt="El Cordón y la Rosa" style="height: 250px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title oswald-500">El Cordón y la Rosa</h5>
+                                <p class="card-text flex-grow-1">Más de 12 años de experiencia gastronómica con servicio de primer nivel.</p>
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-muted"></i>
+                                    <span class="ms-2 fw-bold">4.7/5</span>
+                                    <small class="text-muted ms-1">(523 reseñas)</small>
+                                </div>
+                                <a th:href="@{/restaurante/cordon-y-la-rosa}" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100 border-0">
+                            <img src="/imagenes/norkys/norkys1.jpg" class="card-img-top" alt="Pollería Norkys" style="height: 250px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title oswald-500">Pollería Norkys</h5>
+                                <p class="card-text flex-grow-1">Especialistas en pollo a la brasa con sabor casero y precios accesibles.</p>
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-muted"></i>
+                                    <span class="ms-2 fw-bold">4.5/5</span>
+                                    <small class="text-muted ms-1">(389 reseñas)</small>
+                                </div>
+                                <a th:href="@{/restaurante/norkys}" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Más restaurantes -->
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100 border-0">
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/69/bb/3b/el-fundo-restaurante.jpg?w=1100&h=-1&s=1" class="card-img-top" alt="Restaurante" style="height: 250px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title oswald-500">Restaurante Tradición</h5>
+                                <p class="card-text flex-grow-1">Comida tradicional peruana con un toque moderno y ambiente familiar.</p>
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-muted"></i>
+                                    <span class="ms-2 fw-bold">4.6/5</span>
+                                    <small class="text-muted ms-1">(298 reseñas)</small>
+                                </div>
+                                <a href="#" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100 border-0">
+                            <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/71/5e/bb/caption.jpg?w=1100&h=-1&s=1" class="card-img-top" alt="Restaurante" style="height: 250px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title oswald-500">Mariscos del Puerto</h5>
+                                <p class="card-text flex-grow-1">Los mejores mariscos frescos de la región con vista al mar.</p>
+                                <div class="mb-3">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <span class="ms-2 fw-bold">4.8/5</span>
+                                    <small class="text-muted ms-1">(412 reseñas)</small>
+                                </div>
+                                <a href="#" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de categorías -->
+        <section class="py-5 bg-light rounded-3 my-5">
+            <div class="container">
+                <h3 class="text-center mb-4 oswald-500">Explora por Categorías</h3>
+                <div class="row text-center">
+                    <div class="col-md-3 mb-3">
+                        <div class="p-4">
+                            <i class="fas fa-fish fa-3x text-primary mb-3"></i>
+                            <h5>Mariscos</h5>
+                            <p class="text-muted">Los mejores ceviches y mariscos frescos</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="p-4">
+                            <i class="fas fa-drumstick-bite fa-3x text-primary mb-3"></i>
+                            <h5>Pollo a la Brasa</h5>
+                            <p class="text-muted">El clásico peruano en su máxima expresión</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="p-4">
+                            <i class="fas fa-pepper-hot fa-3x text-primary mb-3"></i>
+                            <h5>Comida Criolla</h5>
+                            <p class="text-muted">Sabores tradicionales del Perú</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="p-4">
+                            <i class="fas fa-yin-yang fa-3x text-primary mb-3"></i>
+                            <h5>Chifa</h5>
+                            <p class="text-muted">Fusión china-peruana única</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row pie">
+                <div class="col-md-4 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Stars</h5>
+                    <p class="small text-secondary">La plataforma líder de reseñas gastronómicas en Ica, donde los
+                        amantes de la comida comparten sus experiencias y descubren nuevos lugares.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/}" class="text-decoration-none text-secondary">Inicio</a></li>
+                        <li><a th:href="@{/explorar}" class="text-decoration-none text-secondary">Explorar</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Contacto</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3 pie">
+                    <h5 class="oswald-500 mb-3 text-warning">Síguenos</h5>
+                    <div class="gap-3 pie">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f text-secondary"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram text-secondary"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter text-secondary"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Noticias</h5>
+                    <form>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Email">
+                            <button class="oswald-500 btn btn-primary" type="button">Suscribir</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small text-white-50 mb-md-0">© 2025 Stars.pe - Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline small mb-0">
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Privacidad</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Términos</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

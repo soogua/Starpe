@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Exitoso - Restaurant Rating Forum</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3 fixed-top">
+            <div class="container-xxl">
+                <a class="navbar-brand fw-bold" th:href="@{/}">
+                    <span class="text-primary fs-2">Stars</span><span class="text-dark fs-6">.pe</span>
+                    <i class="fas fa-star text-danger abc"></i>
+                    <i class="fas fa-star text-white abc" style="filter: drop-shadow(0px 0px 1px #000);"></i>
+                    <i class="fas fa-star text-danger abc"></i>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span><i class="fa-solid fa-bars"></i></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto pt-2 ms-3 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/}">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/explorar}">Explorar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/mejor-valorados}">Mejor valorados</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/cerca-de-mi}">Cerca de mí</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" th:action="@{/buscar}" method="get">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Buscar restaurantes..."
+                            aria-label="Buscar">
+                        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                    </form>
+                    <div class="ms-3">
+                        <a th:href="@{/login}" class="btn btn-primary">Iniciar Sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow border-0 mt-5">
+                    <div class="card-body p-4 text-center">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                        <h2 class="mt-3">¡Registro Exitoso!</h2>
+                        <p class="mb-4">Gracias por registrarte en nuestra plataforma.</p>
+                        
+                        <div class="alert alert-info">
+                            <p><strong>Nombre:</strong> <span th:text="${nombreCompleto}">Nombre Completo</span></p>
+                            <p><strong>Email:</strong> <span th:text="${email}">correo@ejemplo.com</span></p>
+                        </div>
+                        
+                        <a th:href="@{/login}" class="btn btn-primary mt-3">Iniciar Sesión</a>
+                        <a th:href="@{/}" class="btn btn-outline-secondary mt-3 ms-2">Volver al Inicio</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Pie de pagina-->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row pie">
+                <div class="col-md-4 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Stars</h5>
+                    <p class="small text-secondary">La plataforma líder de reseñas gastronómicas en Ica, donde los
+                        amantes de la comida comparten sus experiencias y descubren nuevos lugares.</p>
+                </div>
+                <div class="col-md-2 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Enlaces</h5>
+                    <ul class="list-unstyled">
+                        <li><a th:href="@{/}" class="text-decoration-none text-secondary">Inicio</a></li>
+                        <li><a th:href="@{/explorar}" class="text-decoration-none text-secondary">Explorar</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Contacto</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-3 pie">
+                    <h5 class="oswald-500 mb-3 text-warning">Síguenos</h5>
+                    <div class="gap-3 pie">
+                        <a href="#" class="text-white"><i class="fab fa-facebook-f text-secondary"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram text-secondary"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-twitter text-secondary"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <h5 class="oswald-500 mb-3 text-warning">Noticias</h5>
+                    <form>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Email">
+                            <button class="oswald-500 btn btn-primary" type="button">Suscribir</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="small text-white-50 mb-md-0">© 2025 Stars. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline small mb-0">
+                        <li class="list-inline-item"><a href="#"
+                                class="text-decoration-none text-white-50">Privacidad</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Términos</a>
+                        </li>
+                        <li class="list-inline-item"><a href="#" class="text-decoration-none text-white-50">Cookies</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts JS de Bootstrap, etc. -->
+     <script src="/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

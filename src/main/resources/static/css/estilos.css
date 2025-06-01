@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+.oswald-500{
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+/* 2) Selector de estilo por identificador (id) */
+#cabecera {
+    
+    /* Pegamos la cabecera en la parte superior */
+    position: sticky;
+    top: 0px;
+    z-index: 1000;
+}
+
+
+.container-fluid1{
+    margin: 0;
+    padding: 0;
+}
+
+
+/* logo */
+.abc{
+    margin: 0;
+    padding: 0;
+    width: 5px;
+}
+
+/* Estilos personalizados adicionales */
+.carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-control-prev-icon:hover,
+  .carousel-control-next-icon:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .similar-options-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding-bottom: 15px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .similar-options-scroll img {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  /* Estilo para las estrellas de rating */
+  .star-rating {
+    color: #ffc107;
+  }
+
+  /* Estilos para el carrusel hero */
+.hero-carousel .carousel-control-prev-icon,
+.hero-carousel .carousel-control-next-icon {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+.hero-carousel .carousel-control-prev-icon:hover,
+.hero-carousel .carousel-control-next-icon:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/* Indicadores del carrusel personalizados */
+.hero-carousel .carousel-indicators {
+  bottom: 20px;
+}
+
+.hero-carousel .carousel-indicators button {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin: 0 8px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.hero-carousel .carousel-indicators button.active {
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
+/* Badges de ranking en el carrusel */
+.hero-carousel .badge {
+  font-size: 0.9rem !important;
+  padding: 0.6rem 1.2rem !important;
+  border-radius: 25px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Animación suave para el texto del overlay */
+.carousel-item .position-absolute {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mejora la legibilidad del texto superpuesto */
+.carousel-item h1,
+.carousel-item p {
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+/* Efectos hover para los botones del carrusel */
+.hero-carousel .btn:hover {
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Sistema de calificación por estrellas interactivo mejorado */
+.star-rating-input {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.star-rating-input input[type="radio"] {
+  display: none;
+}
+
+.star-rating-input label.star {
+  font-size: 2.5rem;
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin: 0 2px;
+}
+
+.star-rating-input label.star:hover,
+.star-rating-input label.star:hover ~ label.star,
+.star-rating-input input[type="radio"]:checked ~ label.star {
+  color: #ffc107;
+  text-shadow: 0 0 5px rgba(255, 193, 7, 0.5);
+}
+
+/* Efectos hover para las estrellas */
+.star-rating-input label.star:hover {
+  transform: scale(1.1);
+}
+
+/* Animación de rating text */
+.rating-text {
+  transition: all 0.3s ease;
+}
+
+.star-rating-input:hover + .rating-text {
+  color: #ffc107 !important;
+  font-weight: 600;
+}
+
+/* Validación de formulario */
+.form-control:invalid {
+  border-color: #dc3545;
+}
+
+.form-control:valid {
+  border-color: #28a745;
+}
+
+/* Contador de caracteres */
+#contadorCaracteres {
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.contador-limite {
+  color: #dc3545 !important;
+}
+
+/* Animación para nuevos comentarios */
+.nuevo-comentario {
+  animation: slideInLeft 0.5s ease-out;
+  border-left: 4px solid #0d6efd;
+  background: linear-gradient(135deg, #f8f9ff 0%, #e3f2fd 100%);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Estilo para comentarios sin reseñas */
+.sin-comentarios {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px dashed #dee2e6;
+  border-radius: 10px;
+}
+
+/* Responsive para dispositivos móviles */
+@media(max-width:768px){
+  .carousel-item .position-absolute {
+    padding: 1rem !important;
+  }
+  
+  .carousel-item h1 {
+    font-size: 1.8rem !important;
+  }
+  
+  .carousel-item .fs-3 {
+    font-size: 1.5rem !important;
+  }
+  
+  .carousel-item .fs-4 {
+    font-size: 1.2rem !important;
+  }
+  
+  .hero-carousel .d-flex.gap-3 {
+    flex-direction: column;
+    gap: 1rem !important;
+  }
+  
+  .hero-carousel .btn-lg {
+    padding: 0.8rem 2rem !important;
+    font-size: 1rem !important;
+  }
+  
+  .hero-carousel .badge {
+    font-size: 0.7rem !important;
+    padding: 0.4rem 0.8rem !important;
+  }
+}
+
+@media(max-width:770px){
+    .pie{
+        align-items: center;
+        text-align: center;
+    }
+    .pie1{
+        margin-top: 15px;
+        
+    }
+}
