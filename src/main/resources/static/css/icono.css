@@ -1,0 +1,92 @@
+/* Estilos para el menú de usuario */
+.user-menu-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    background-color: transparent;
+    transition: all 0.3s;
+}
+
+.user-menu-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.user-menu-btn:focus {
+    box-shadow: none;
+}
+
+.user-menu-btn img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+}
+
+.user-dropdown {
+    width: 280px;
+    padding: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+}
+
+.user-dropdown .dropdown-header {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.user-dropdown .dropdown-header img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+
+.user-dropdown .dropdown-item {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.user-dropdown .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+.user-dropdown .dropdown-item i {
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+    color: #6c757d;
+}
+
+.user-dropdown .dropdown-item:hover i {
+    color: #0d6efd;
+}
+
+/* Efecto para el botón cuando el menú está abierto */
+.user-menu.show .user-menu-btn {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el menú de usuario compacto */
+.navbar .dropdown > .btn {
+    padding: 0;
+    margin-left: 0.5rem;
+    transition: transform 0.2s;
+}
+
+.navbar .dropdown > .btn:hover {
+    transform: scale(1.05);
+}
+
+/* Asegura que el menú desplegable tenga buen z-index */
+.user-dropdown {
+    z-index: 1021; /* Por encima del navbar fixed */
+}
+
+/* Corrección para el icono de utensilios */
+.fa-utensils {
+    font-family: 'Font Awesome 6 Free' !important;
+}
