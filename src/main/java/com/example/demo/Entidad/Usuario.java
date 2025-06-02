@@ -15,6 +15,9 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String nombreU;
+
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -27,6 +30,13 @@ public class Usuario {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombreU;
+    }
+    public void setNombre(String nombre) {
+        this.nombreU = nombre;
     }
 
     public String getEmail() {
