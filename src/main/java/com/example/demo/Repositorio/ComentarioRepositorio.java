@@ -2,13 +2,13 @@ package com.example.demo.Repositorio;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.demo.Entidad.Comentarios;
+import java.util.List;
 
 public interface ComentarioRepositorio extends JpaRepository<Comentarios, Long> {
-
-    // Aquí puedes agregar métodos personalizados si es necesario
-    // Por ejemplo, para buscar comentarios por usuario o por contenido específico
-
-    // Ejemplo de método personalizado (si fuera necesario)
-    // List<Comentarios> findByUsuarioId(Long usuarioId);   
     
+    // Método para buscar comentarios por slug de restaurante
+    List<Comentarios> findByRestauranteSlug(String restauranteSlug);
+    
+    // Método adicional para ordenar por fecha (más recientes primero)
+    List<Comentarios> findByRestauranteSlugOrderByFechaCreacionDesc(String restauranteSlug);
 }

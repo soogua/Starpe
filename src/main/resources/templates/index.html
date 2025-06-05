@@ -44,11 +44,14 @@
                 <input class="form-control me-2" type="search" name="q" placeholder="Buscar restaurantes..." aria-label="Buscar">
                 <button class="btn btn-outline-primary" type="submit">Buscar</button>
             </form>
-            <div class="ms-3 d-flex align-items-center">
+            <!-- Botón de login/registro solo si no hay usuario -->
+            <div class="ms-3 d-flex align-items-center" th:if="${nombreusuario == null}">
                 <a th:href="@{/login}" class="btn btn-outline-primary me-2">Iniciar Sesión</a>
                 <a th:href="@{/register}" class="btn btn-primary me-2">Registrarse</a>
-                
-                <!-- Menú de usuario compacto -->
+            </div>
+
+            <!-- Menú de usuario solo si hay sesión activa -->
+            <div class="ms-3 d-flex align-items-center" th:if="${nombreusuario != null}">
                 <div class="dropdown">
                     <button class="btn p-0 border-0 bg-transparent" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="/imagenes/usuario.png" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;" alt="Usuario">
@@ -58,8 +61,8 @@
                             <div class="d-flex align-items-center">
                                 <img src="/imagenes/usuario.png" class="rounded-circle me-2" style="width: 40px; height: 40px;" alt="Usuario">
                                 <div>
-                                    <h6 class="mb-0" th:text="${nombreusuario}" ></h6>
-                                    <small class="text-muted" th:text="${emailusuario}" ></small>
+                                    <h6 class="mb-0" th:text="${nombreusuario}">Nombre</h6>
+                                    <small class="text-muted" th:text="${emailusuario}">email@correo.com</small>
                                 </div>
                             </div>
                         </li>
@@ -69,7 +72,7 @@
                         <li><a class="dropdown-item" href="#"><i class="fas fa-heart me-2"></i>Favoritos</a></li>
                         <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a></li>
                     </ul>
                 </div>
             </div>
@@ -185,7 +188,7 @@
                                     <span class="ms-2 fw-bold">4.9/5</span>
                                     <small class="text-muted ms-1">(870 reseñas)</small>
                                 </div>
-                                <a th:href="@{/restaurante/el-fundo}" class="btn btn-primary">Ver Detalles</a>
+                                <a th:href="@{/main/restaurante/el-fundo}" class="btn btn-primary">Ver Detalles</a>
                             </div>
                         </div>
                     </div>
@@ -205,7 +208,7 @@
                                     <span class="ms-2 fw-bold">4.8/5</span>
                                     <small class="text-muted ms-1">(642 reseñas)</small>
                                 </div>
-                                <a th:href="@{/restaurante/chifa-yemheng}" class="btn btn-primary">Ver Detalles</a>
+                                <a th:href="@{/main/restaurante/chifa-yemheng}" class="btn btn-primary">Ver Detalles</a>
                             </div>
                         </div>
                     </div>
@@ -225,7 +228,7 @@
                                     <span class="ms-2 fw-bold">4.7/5</span>
                                     <small class="text-muted ms-1">(523 reseñas)</small>
                                 </div>
-                                <a th:href="@{/restaurante/cordon-y-la-rosa}" class="btn btn-primary">Ver Detalles</a>
+                                <a th:href="@{/main/restaurante/cordon-y-la-rosa}" class="btn btn-primary">Ver Detalles</a>
                             </div>
                         </div>
                     </div>
@@ -245,7 +248,7 @@
                                     <span class="ms-2 fw-bold">4.5/5</span>
                                     <small class="text-muted ms-1">(389 reseñas)</small>
                                 </div>
-                                <a th:href="@{/restaurante/norkys}" class="btn btn-primary">Ver Detalles</a>
+                                <a th:href="@{/main/restaurante/norkys}" class="btn btn-primary">Ver Detalles</a>
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,5 @@
 package com.example.demo.Entidad;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import com.example.demo.Entidad.Usuario;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +20,9 @@ public class Comentarios {
     @Column(nullable = false)
     private int calificacion;
 
+    @Column(name = "titulo_comentario", nullable = false, length = 100)
+    private String tituloComentario;
+
     @Column(nullable = false, length = 500)
     private String comentario;
 
@@ -30,6 +31,8 @@ public class Comentarios {
 
     @Column(name = "restaurante_slug", nullable = false)
     private String restauranteSlug;
+    
+
 
     public Comentarios() {
         this.fechaCreacion = LocalDateTime.now();
@@ -76,6 +79,9 @@ public class Comentarios {
     public LocalDateTime getFechaCreacion() {
         return fechaCreacion;
     }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) {
+    this.fechaCreacion = fechaCreacion;
+}
 
     public String getRestauranteSlug() {
         return restauranteSlug;
@@ -83,5 +89,13 @@ public class Comentarios {
 
     public void setRestauranteSlug(String restauranteSlug) {
         this.restauranteSlug = restauranteSlug;
+    }
+
+    public void setTituloComentario(String tituloComentario) {
+        this.tituloComentario = tituloComentario;
+    }
+
+    public String getTituloComentario() {
+        return tituloComentario;
     }
 }

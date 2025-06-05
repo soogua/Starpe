@@ -1,5 +1,6 @@
 package com.example.demo.Controlador;
 
+import com.example.demo.Entidad.Usuario;
 import com.example.demo.modelo.Comentario;
 import com.example.demo.servicio.ComentarioService;
 import java.util.List;
@@ -60,12 +61,13 @@ public class Controlador {
     
     // Muestra la página de registro
     @GetMapping("/register")
-public String mostrarRegistro() {
+public String mostrarRegistro(Model model) {
+    model.addAttribute("usuario", new Usuario());
     return "pages/register";
 }
     
     // Procesa el envío del formulario de registro
-    @PostMapping("/register")
+    @PostMapping("/registerrrrr")
     public String procesarRegistro(
             @RequestParam("firstName") String firstName,
             @RequestParam("lastName") String lastName,

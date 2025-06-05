@@ -87,7 +87,7 @@
                             <hr class="flex-grow-1">
                         </div>
 
-                        <form th:action="@{/registrar}" method="POST">
+                        <form th:action="@{/auth/procesarRegistro}" method="POST">
                             <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
                             <div class="row">
                                 <div class="col-md-6 mb-3">

@@ -2,6 +2,12 @@ package com.example.demo;
 
 import com.example.demo.modelo.Comentario;
 import com.example.demo.servicio.ComentarioService;
+import com.example.demo.servicio.ComentariosBDService;
+import com.example.demo.Entidad.Comentarios;
+import com.example.demo.Entidad.Usuario;
+import com.example.demo.Repositorio.ComentarioRepositorio;
+import jakarta.servlet.http.HttpSession;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,12 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RestController
+@Controller
 @RequestMapping("/main") // Define la ruta base para todas las solicitudes de este controlador
 public class MainControlador {
     
     @Autowired
     private ComentarioService comentarioService;
+
+    @Autowired
+    private ComentariosBDService comentariosBDService;
+
+    @Autowired
+    private ComentarioRepositorio comentarioRepository;
     
     // Página principal con ranking dinámico
     @GetMapping("/main")
@@ -147,7 +159,7 @@ public String mostrarRegistro() {
         model.addAttribute("telefono", "+ 51 977 860 672");
         model.addAttribute("paginaWeb", "http://www.fundolaspalmeras.com/");
         model.addAttribute("descripcion", "Lugar fuera del centro de Ica, se caracteriza por ser amplio, con techos altos para una muy buena ventilación, la atención es excelente desde la llegada hasta la partida, la comida tanto marina como criolla de lo mejor, el restaurante cuenta con estacionamiento propio y seguro.");
-        
+        model.addAttribute("restauranteSlug", restauranteSlug);
         // Imágenes específicas del restaurante
         model.addAttribute("imagenes", new String[]{
             "/imagenes/ElFundo/fundo5.jpg",
@@ -156,12 +168,20 @@ public String mostrarRegistro() {
             "/imagenes/ElFundo/fundo4.jpg"
         });
         
-        // Agregar datos dinámicos de comentarios
-        List<Comentario> comentarios = comentarioService.obtenerComentarios(restauranteSlug);
-        double calificacionPromedio = comentarioService.calcularCalificacionPromedio(restauranteSlug);
-        int totalOpiniones = comentarioService.obtenerTotalOpiniones(restauranteSlug);
+        // CAMBIO PRINCIPAL: Usar servicio de BD en lugar de memoria
+        List<Comentario> comentariosBD = comentariosBDService.obtenerComentariosPorRestaurante(restauranteSlug);
+        double calificacionPromedio = comentariosBDService.calcularCalificacionPromedio(restauranteSlug);
+        int totalOpiniones = comentariosBDService.obtenerTotalOpiniones(restauranteSlug);
         
-        model.addAttribute("comentarios", comentarios);
+        // Debug: Agregar logs para ver qué está pasando
+        System.out.println("=== DEBUG COMENTARIOS ===");
+        System.out.println("Buscando comentarios para: " + restauranteSlug);
+        System.out.println("Comentarios encontrados: " + comentariosBD.size());
+        for (Comentario c : comentariosBD) {
+            System.out.println("- Usuario: " + c.getNombreUsuario() + ", Calificación: " + c.getCalificacion());
+        }
+
+        model.addAttribute("comentarios", comentariosBD);
         model.addAttribute("calificacion", calificacionPromedio);
         model.addAttribute("calificacionFormateada", String.format("%.1f", calificacionPromedio));
         model.addAttribute("totalOpiniones", totalOpiniones);
@@ -183,7 +203,8 @@ public String mostrarRegistro() {
         model.addAttribute("telefono", "+ 51 977 860 672");
         model.addAttribute("paginaWeb", "#");
         model.addAttribute("descripcion", "En Chifa Yemheng fusionamos lo mejor de la cocina china y peruana para ofrecerte platos sabrosos, frescos y llenos de tradición. Ubicados en Ica, nos esforzamos por brindar un servicio cálido y una experiencia gastronómica inolvidable para toda la familia.");
-        
+        model.addAttribute("restauranteSlug", restauranteSlug);
+
         // Imágenes específicas del restaurante
         model.addAttribute("imagenes", new String[]{
             "/imagenes/Yemheng/yem4.jpg",
@@ -193,12 +214,12 @@ public String mostrarRegistro() {
             "/imagenes/Yemheng/yem2.jpg"
         });
         
-        // Agregar datos dinámicos de comentarios
-        List<Comentario> comentarios = comentarioService.obtenerComentarios(restauranteSlug);
-        double calificacionPromedio = comentarioService.calcularCalificacionPromedio(restauranteSlug);
-        int totalOpiniones = comentarioService.obtenerTotalOpiniones(restauranteSlug);
+        // CAMBIO PRINCIPAL: Usar servicio de BD en lugar de memoria
+        List<Comentario> comentariosBD = comentariosBDService.obtenerComentariosPorRestaurante(restauranteSlug);
+        double calificacionPromedio = comentariosBDService.calcularCalificacionPromedio(restauranteSlug);
+        int totalOpiniones = comentariosBDService.obtenerTotalOpiniones(restauranteSlug);
         
-        model.addAttribute("comentarios", comentarios);
+        model.addAttribute("comentarios", comentariosBD);
         model.addAttribute("calificacion", calificacionPromedio);
         model.addAttribute("calificacionFormateada", String.format("%.1f", calificacionPromedio));
         model.addAttribute("totalOpiniones", totalOpiniones);
@@ -220,7 +241,8 @@ public String mostrarRegistro() {
         model.addAttribute("telefono", "+51 1 786030");
         model.addAttribute("paginaWeb", "https://elcordonylarosa.pe/");
         model.addAttribute("descripcion", "El Cordón y la Rosa es un restaurante con más de 12 años de experiencia en el sector gastronómico y considerado uno de los mejores restaurantes de la región. Te invitamos a visitarnos en compañía de tus seres queridos, degustar los mejores platos a la carta, bebidas y postres, un servicio de primer nivel y un ambiente único.");
-        
+        model.addAttribute("restauranteSlug", restauranteSlug);
+
         // Imágenes específicas del restaurante
         model.addAttribute("imagenes", new String[]{
             "/imagenes/CordonylaRosa/cordon1.jpg",
@@ -229,12 +251,12 @@ public String mostrarRegistro() {
             "/imagenes/CordonylaRosa/cordon4.jpg"
         });
         
-        // Agregar datos dinámicos de comentarios
-        List<Comentario> comentarios = comentarioService.obtenerComentarios(restauranteSlug);
-        double calificacionPromedio = comentarioService.calcularCalificacionPromedio(restauranteSlug);
-        int totalOpiniones = comentarioService.obtenerTotalOpiniones(restauranteSlug);
-        
-        model.addAttribute("comentarios", comentarios);
+        // CAMBIO PRINCIPAL: Usar servicio de BD en lugar de memoria
+        List<Comentario> comentariosBD = comentariosBDService.obtenerComentariosPorRestaurante(restauranteSlug);
+        double calificacionPromedio = comentariosBDService.calcularCalificacionPromedio(restauranteSlug);
+        int totalOpiniones = comentariosBDService.obtenerTotalOpiniones(restauranteSlug);
+
+        model.addAttribute("comentarios", comentariosBD);
         model.addAttribute("calificacion", calificacionPromedio);
         model.addAttribute("calificacionFormateada", String.format("%.1f", calificacionPromedio));
         model.addAttribute("totalOpiniones", totalOpiniones);
@@ -256,19 +278,20 @@ public String mostrarRegistro() {
         model.addAttribute("telefono", "+51 1 283030");
         model.addAttribute("paginaWeb", "https://www.norkys.pe/");
         model.addAttribute("descripcion", "El Restaurante Norkys es una cadena peruana de comida rápida fundada en 1986, especializada en pollo a la brasa y otros platos populares como parrilladas, hamburguesas, salchipapas y anticuchos, destacando por su sabor casero, precios accesibles y servicio rápido. Con su eslogan \"Norkys, como en casa\", la marca se ha expandido en Lima y otras ciudades, ofreciendo un ambiente familiar e incluso áreas de juegos para niños en algunos locales, consolidándose como una opción reconocida en el rubro de comida al paso en Perú.");
-        
+        model.addAttribute("restauranteSlug", restauranteSlug);
+
         // Imágenes específicas del restaurante
         model.addAttribute("imagenes", new String[]{
             "/imagenes/norkys/norkys1.jpg",
             "/imagenes/norkys/norkys2.jpg"
         });
         
-        // Agregar datos dinámicos de comentarios
-        List<Comentario> comentarios = comentarioService.obtenerComentarios(restauranteSlug);
-        double calificacionPromedio = comentarioService.calcularCalificacionPromedio(restauranteSlug);
-        int totalOpiniones = comentarioService.obtenerTotalOpiniones(restauranteSlug);
-        
-        model.addAttribute("comentarios", comentarios);
+        // CAMBIO PRINCIPAL: Usar servicio de BD en lugar de memoria
+        List<Comentario> comentariosBD = comentariosBDService.obtenerComentariosPorRestaurante(restauranteSlug);
+        double calificacionPromedio = comentariosBDService.calcularCalificacionPromedio(restauranteSlug);
+        int totalOpiniones = comentariosBDService.obtenerTotalOpiniones(restauranteSlug);
+
+        model.addAttribute("comentarios", comentariosBD);
         model.addAttribute("calificacion", calificacionPromedio);
         model.addAttribute("calificacionFormateada", String.format("%.1f", calificacionPromedio));
         model.addAttribute("totalOpiniones", totalOpiniones);
@@ -276,21 +299,5 @@ public String mostrarRegistro() {
         return "restaurantes/detalle-restaurante";
     }
     
-    // POST endpoint para agregar comentarios
-    @PostMapping("/restaurante/{restaurante}/comentario")
-    public String agregarComentario(
-            @PathVariable("restaurante") String restaurante,
-            @RequestParam("nombreUsuario") String nombreUsuario,
-            @RequestParam("calificacion") int calificacion,
-            @RequestParam("comentario") String comentarioTexto,
-            Model model) {
-        
-        // Crear y guardar el comentario
-        Comentario nuevoComentario = new Comentario(nombreUsuario, calificacion, comentarioTexto, restaurante);
-        comentarioService.agregarComentario(restaurante, nuevoComentario);
-        
-        // Redireccionar de vuelta a la página del restaurante
-        return "redirect:/restaurante/" + restaurante + "?comentario=agregado";
-    }
 }
 

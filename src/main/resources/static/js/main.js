@@ -115,44 +115,46 @@ function initializeReviewForm() {
             });
         });
     }
+    
+if (formularioReseña) {
+    formularioReseña.addEventListener('submit', function(e) {
+        // Validación básica
+        const tituloComentario = document.getElementById('tituloComentario').value.trim();
+        const calificacion = document.querySelector('input[name="calificacion"]:checked');
+        const comentario = document.getElementById('comentario').value.trim();
+        const politica = document.getElementById('politicaPrivacidad').checked;
 
-    // Validación y envío del formulario
-    if (formularioReseña) {
-        formularioReseña.addEventListener('submit', function(e) {
+        if (!tituloComentario || tituloComentario.length < 2) {
             e.preventDefault();
-            
-            // Validación básica
-            const nombreUsuario = document.getElementById('nombreUsuario').value.trim();
-            const calificacion = document.querySelector('input[name="calificacion"]:checked');
-            const comentario = document.getElementById('comentario').value.trim();
-            const politica = document.getElementById('politicaPrivacidad').checked;
+            showError('Por favor, ingresa un nombre válido.');
+            return;
+        }
 
-            if (!nombreUsuario || nombreUsuario.length < 2) {
-                showError('Por favor, ingresa un nombre válido.');
-                return;
-            }
+        if (!calificacion) {
+            e.preventDefault();
+            showError('Por favor, selecciona una calificación.');
+            return;
+        }
 
-            if (!calificacion) {
-                showError('Por favor, selecciona una calificación.');
-                return;
-            }
+        if (!comentario || comentario.length < 10) {
+            e.preventDefault();
+            showError('Por favor, escribe un comentario de al menos 10 caracteres.');
+            return;
+        }
 
-            if (!comentario || comentario.length < 10) {
-                showError('Por favor, escribe un comentario de al menos 10 caracteres.');
-                return;
-            }
+        if (!politica) {
+            e.preventDefault();
+            showError('Debes aceptar las políticas de contenido.');
+            return;
+        }
 
-            if (!politica) {
-                showError('Debes aceptar las políticas de contenido.');
-                return;
-            }
-
-            // Si todo está bien, enviar el formulario
-            showLoading();
-            this.submit();
-        });
-    }
+        // Si pasa la validación, se muestra el spinner y el formulario se envía
+        showLoading();
+        // No se necesita e.preventDefault(); aquí
+        // El formulario se enviará normalmente a Spring Boot
+    });
 }
+
 
 /**
  * Muestra un mensaje de error
@@ -185,4 +187,4 @@ function showLoading() {
         btnPublicar.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Publicando...';
         btnPublicar.disabled = true;
     }
-}
+}}

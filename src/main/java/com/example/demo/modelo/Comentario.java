@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Comentario {
     private String nombreUsuario;
+    private String tituloComentario;
     private int calificacion;
     private String comentario;
     private LocalDateTime fecha;
@@ -30,6 +31,14 @@ public class Comentario {
 
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getTituloComentario() {
+        return tituloComentario;
+    }
+
+    public void setTituloComentario(String tituloComentario) {
+        this.tituloComentario = tituloComentario;
     }
 
     public int getCalificacion() {
