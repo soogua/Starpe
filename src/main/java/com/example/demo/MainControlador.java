@@ -146,9 +146,17 @@ public String mostrarRegistro() {
     
     // Rutas para restaurantes específicos
     @GetMapping("/restaurante/el-fundo")
-    public String elFundo(Model model) {
+    public String elFundo(Model model, HttpSession session) {
         String restauranteSlug = "el-fundo";
         
+
+         // Si hay usuario logueado, pásalo al modelo para mostrar el menú de usuario
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario != null) {
+            model.addAttribute("nombreusuario", usuario.getNombre());
+            model.addAttribute("emailusuario", usuario.getEmail());
+        }
+
         // Datos del restaurante El Fundo
         model.addAttribute("nombreRestaurante", "El Fundo");
         model.addAttribute("ranking", "#1 de 198 restaurantes en Ica");
@@ -190,9 +198,17 @@ public String mostrarRegistro() {
     }
     
     @GetMapping("/restaurante/chifa-yemheng")
-    public String chifaYemheng(Model model) {
+    public String chifaYemheng(Model model, HttpSession session) {
         String restauranteSlug = "chifa-yemheng";
         
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario != null) {
+            model.addAttribute("nombreusuario", usuario.getNombre());
+            model.addAttribute("emailusuario", usuario.getEmail());
+        }
+
+
         // Datos del restaurante Chifa Yemheng
         model.addAttribute("nombreRestaurante", "Chifa Yemheng");
         model.addAttribute("ranking", "#2 de 198 restaurantes en Ica");
@@ -228,9 +244,15 @@ public String mostrarRegistro() {
     }
     
     @GetMapping("/restaurante/cordon-y-la-rosa")
-    public String cordonYLaRosa(Model model) {
+    public String cordonYLaRosa(Model model, HttpSession session) {
         String restauranteSlug = "cordon-y-la-rosa";
         
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario != null) {
+            model.addAttribute("nombreusuario", usuario.getNombre());
+            model.addAttribute("emailusuario", usuario.getEmail());
+        }
+
         // Datos del restaurante El Cordón y la Rosa
         model.addAttribute("nombreRestaurante", "El Cordón y la Rosa");
         model.addAttribute("ranking", "#3 de 198 restaurantes en Ica");
@@ -265,9 +287,16 @@ public String mostrarRegistro() {
     }
     
     @GetMapping("/restaurante/norkys")
-    public String norkys(Model model) {
+    public String norkys(Model model, HttpSession session) {
         String restauranteSlug = "norkys";
         
+
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuario != null) {
+            model.addAttribute("nombreusuario", usuario.getNombre());
+            model.addAttribute("emailusuario", usuario.getEmail());
+        }
+
         // Datos del restaurante Norkys
         model.addAttribute("nombreRestaurante", "Pollería Norkys");
         model.addAttribute("ranking", "#4 de 198 restaurantes en Ica");

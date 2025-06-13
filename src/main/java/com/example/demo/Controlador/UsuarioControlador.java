@@ -3,7 +3,7 @@ package com.example.demo.Controlador;
 import com.example.demo.Entidad.Usuario;
 import com.example.demo.Repositorio.UsuarioRepositorio;
 import com.example.demo.modelo.Comentario;
-
+import com.example.demo.servicio.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -26,17 +26,20 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/auth")
 public class UsuarioControlador {
+    private final UsuarioService usuarioService;
 
     @Autowired
     private UsuarioRepositorio usuarioRepo;
+
     @Autowired
     private ComentarioRepositorio comentarioRepository;
 
-    // Mostrar formulario (GET)
-   // @GetMapping("/login")
-  //  public String mostrarLogin() {
-  //      return "redirect:/login.html";  // Sirve el HTML estático
-  //  }
+    @Autowired
+private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
+    UsuarioControlador(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
 
     @PostMapping("/registrar")
     public String registrarUsuario(@RequestParam("firstName") String firstName,
@@ -97,6 +100,7 @@ public String procesarRegistro(
     usuario.setPassword(password); // Recomendado: encriptar antes de guardar
 
     usuarioRepo.save(usuario);
+    usuarioService.registerUser(usuario);
 
     // Pasar datos a la vista de éxito
     model.addAttribute("nombreCompleto", firstName + " " + lastName);
@@ -117,12 +121,12 @@ public String verificarLogin(@RequestParam String email,
 
     Optional<Usuario> usuario = usuarioRepo.findByEmail(email);
 
-    if (usuario.isPresent() && usuario.get().getPassword().equals(password)) {
+    if (usuario.isPresent() && passwordEncoder.matches(password, usuario.get().getPassword())) {
         session.setAttribute("usuarioLogueado", usuario.get());
         return "redirect:/auth/index"; // Puedes redirigir, ya que los datos están en sesión
     } else {
         modelo.addAttribute("error", "Email o contraseña incorrectos.");
-        return "login";
+        return "pages/login";
     }
 }
 
