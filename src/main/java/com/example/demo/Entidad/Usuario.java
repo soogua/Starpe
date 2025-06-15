@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "usuarios")
@@ -18,9 +20,13 @@ public class Usuario {
     @Column(nullable = false)
     private String nombreU;
 
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "El formato del email no es válido")
     @Column(unique = true, nullable = false)
     private String email;
 
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     @Column(nullable = false)
     private String password;
 
